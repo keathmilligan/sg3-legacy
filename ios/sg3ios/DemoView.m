@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Keath Milligan. All rights reserved.
 //
 
+#import <OpenGLES/ES2/glext.h>
 #import "DemoView.h"
 #import <examples/sg3_demo.h>
 
