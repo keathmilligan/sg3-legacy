@@ -5,18 +5,6 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-#if defined(__MINGW32__)
-#include <gl/gl.h>
-#include <gl/glu.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
 GLint gluProjectf(GLfloat objx, GLfloat objy, GLfloat objz,
                   const GLfloat modelMatrix[16],
                   const GLfloat projMatrix[16],
@@ -29,6 +17,10 @@ GLint gluUnProjectf(GLfloat winx, GLfloat winy, GLfloat winz,
                     const GLint viewport[4],
                     GLfloat *objx, GLfloat *objy, GLfloat *objz);
 
-
+#if SG3_OPENGLES
+void gluLookAt(GLfloat eyex, GLfloat eyey, GLfloat eyez,
+               GLfloat centerx, GLfloat centery, GLfloat centerz,
+               GLfloat upx, GLfloat upy, GLfloat upz);
+#endif
 
 #endif /* UTIL_H_ */

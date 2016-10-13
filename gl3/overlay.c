@@ -3,17 +3,7 @@
  * Copyright 2012 Keath Milligan
  */
 
-#if defined(__MINGW32__)
-#include <gl/gl.h>
-#include <gl/glu.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
+#include "gl.h"
 #include "overlay.h"
 #include "math.h"
 #include <log/log.h>
@@ -217,7 +207,7 @@ static void overlaycircle_render(OverlayCircle *object) {
     glPopMatrix();
 }
 
-OverlayImage *overlayimage_create(int width, int height, const char *image_name) {
+OverlayImage *overlayimage_create(int width, int height, const char *resources, const char *image_name) {
     OverlayImage *object = calloc(1, sizeof(OverlayImage));
     SETCOLOR(((OverlayObject*)object)->color, 255, 255, 255, 255);
     ((OverlayObject*)object)->scale = NUM2D(1.0f, 1.0f);
@@ -228,7 +218,7 @@ OverlayImage *overlayimage_create(int width, int height, const char *image_name)
     ((OverlayObject*)object)->vertices[3] = NUM2D((float)(width/2), (float)(height/2));
     ((OverlayObject*)object)->render = (OverlayObjectFPtr)overlayimage_render;
     ((OverlayObject*)object)->destroy = (OverlayObjectFPtr)overlayimage_destroy;
-    object->bitmap = texture_create(image_name, TRUE, FALSE);
+    object->bitmap = texture_create(resources, image_name, TRUE, FALSE);
     object->uvs = calloc(4, sizeof(UV));
     object->faces = malloc(sizeof(Face)*2);
     object->uvs[0] = (UV){1.0f, 0.0f};

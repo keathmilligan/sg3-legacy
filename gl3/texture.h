@@ -32,8 +32,8 @@ typedef struct _TextureList {
     struct _TextureList *prev;
 } TextureList;
 
-Texture *texture_create(const char *name, int generate_mipmap, int flip_y);
-int texture_init(Texture *texture, const char *name, int generate_mipmap, int flip_y);
+Texture *texture_create(const char *resources, const char *name, int generate_mipmap, int flip_y);
+int texture_init(Texture *texture, const char *resources, const char *name, int generate_mipmap, int flip_y);
 void texture_destroy(Texture *texture);
 void texture_activate(Texture *texture);
 void texture_deactivate(Texture *texture);

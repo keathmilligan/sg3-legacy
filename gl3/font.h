@@ -21,7 +21,7 @@ typedef struct _Font {
     Glyph chars[256];
 } Font;
 
-Font *font_create(const char *name);
+Font *font_create(const char *resources, const char *name);
 void font_destroy(Font *font);
 
 #endif /* FONT_H_ */

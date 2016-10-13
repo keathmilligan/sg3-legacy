@@ -3,24 +3,14 @@
  * Copyright 2012 Keath Milligan
  */
 
-#if defined(__MINGW32__)
-#include <gl/gl.h>
-#include <gl/glu.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
 #ifdef __MINGW32__
 #include <malloc.h>
 #endif
 #include <stdio.h>
 
 #include <log/log.h>
+
+#include "gl.h"
 #include "effects.h"
 #include "objects.h"
 #include "math.h"
@@ -48,13 +38,9 @@ LensFlare *lensflare_create(const char *resources, Camera *camera, Number3D ligh
     EFFECT(flare)->destroy = (EffectDestroyFuncPtr)lensflare_destroy;
     flare->light_position = light_position;
     flare->light_radius = light_radius;
-    char *s = alloca(strlen(resources)+32);
-    sprintf(s, "%sstreaks.png", resources);
-    flare->_streaks = texture_create(s, TRUE, FALSE);
-    sprintf(s, "%shalo.png", resources);
-    flare->_halo = texture_create(s, TRUE, FALSE);
-    sprintf(s, "%sglow.png", resources);
-    flare->_glow = texture_create(s, TRUE, FALSE);
+    flare->_streaks = texture_create(resources, "streaks.png", TRUE, FALSE);
+    flare->_halo = texture_create(resources, "halo.png", TRUE, FALSE);
+    flare->_glow = texture_create(resources, "glow.png", TRUE, FALSE);
     return flare;
 }
 

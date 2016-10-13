@@ -2,18 +2,7 @@
  * Copyright 2012 Keath Milligan
  */
 
-#if defined(__MINGW32__)
-#include <gl/gl.h>
-#include <gl/glu.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
+#include "gl.h"
 #include "math.h"
 #include "util.h"
 #include "camera.h"

@@ -19,21 +19,13 @@
 	#define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
 	#include <wingdi.h>
-	#include <GL/gl.h>
-//#elif defined(__APPLE__) || defined(__APPLE_CC__)
-//	/*	I can't test this Apple stuff!	*/
-//	#include <OpenGL/gl.h>
-//	#include <Carbon/Carbon.h>
-//	#define APIENTRY
-#elif defined(__APPLE__)
-    #include <OpenGL/OpenGL.h>
-    #include <OpenGL/gl.h>
-    #include <Carbon/Carbon.h>
-    #define APIENTRY
-#else
-	#include <GL/gl.h>
-	#include <GL/glx.h>
 #endif
+
+#if defined(__APPLE__)
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
+#include <gl3/gl.h>
 
 #include "SOIL.h"
 #include "stb_image_aug.h"
@@ -83,7 +75,12 @@ int query_DXT_capability( void );
 #define SOIL_RGBA_S3TC_DXT1		0x83F1
 #define SOIL_RGBA_S3TC_DXT3		0x83F2
 #define SOIL_RGBA_S3TC_DXT5		0x83F3
+#ifndef APIENTRY
+#define APIENTRY
+#endif
 typedef void (APIENTRY * P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC) (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid * data);
+
+
 P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC soilGlCompressedTexImage2D = NULL;
 unsigned int SOIL_direct_load_DDS(
 		const char *filename,

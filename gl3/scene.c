@@ -11,18 +11,7 @@
 #include <malloc.h>
 #endif
 
-#if defined(__MINGW32__)
-#include <gl/gl.h>
-#include <gl/glu.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
+#include "gl.h"
 #include <unistd.h>
 #include "scene.h"
 #include "camera.h"
@@ -391,14 +380,14 @@ Skybox *skybox_create(const char *resources, const char *texture, float distance
     skybox->distance = distance;
     skybox->fixed_proximity = TRUE;
     skybox->camera = camera;
-    char *s = alloca(strlen(resources)+strlen(texture)+20);
+    char *s = alloca(strlen(texture)+20);
     const char *sides[] = {"right1", "left2", "top3", "bottom4", "front5", "back6"};
     int i;
     for (i=0; i<6; i++) {
-        sprintf(s, "%s%s_%s.png", resources, texture, sides[i]);
+        sprintf(s, "%s_%s.png", texture, sides[i]);
         Texture *t = NULL;
-        if (access(s, R_OK) != -1) {
-            t = texture_create(s, TRUE, FALSE);
+        t = texture_create(resources, s, TRUE, FALSE);
+        if (t) {
             Panel *p = panel_create(distance*2.0f, distance*2.0f, t);
             OBJ3D(p)->lighting_enabled = FALSE;
             OBJ3D(p)->materials_enabled = FALSE;

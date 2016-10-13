@@ -38,9 +38,9 @@ typedef struct _char_descriptor {
     unsigned char chnl;
 } __attribute((packed)) char_descriptor;
 
-Font *font_create(const char *name) {
-    char *fname = alloca(strlen(name)+5);
-    sprintf(fname, "%s.fnt", name);
+Font *font_create(const char *resources, const char *name) {
+    char *fname = alloca(strlen(resources)+strlen(name)+5);
+    sprintf(fname, "%s%s.fnt", resources, name);
     FILE *f = fopen(fname, "rb");
     if (f == NULL) {
         LOGERR("could not open: %s errno = %d\n", f, errno);
@@ -97,7 +97,7 @@ Font *font_create(const char *name) {
     }
     char *tname = alloca(strlen(name)+7);
     sprintf(tname, "%s_0.png", name);
-    font->texture = texture_create(tname, FALSE, FALSE);
+    font->texture = texture_create(resources, tname, FALSE, FALSE);
     if (font->texture == NULL) {
         font_destroy(font);
         return NULL;

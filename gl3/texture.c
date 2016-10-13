@@ -4,45 +4,37 @@
  */
 
 #if defined(__MINGW32__)
-#include <gl/gl.h>
-#include <gl/glu.h>
-#include <gl/glext.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <OpenGL/glext.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
+#include <malloc.h>
 #endif
+#include "gl.h"
+#include <stdio.h>
 #include <soil/SOIL.h>
 #include "texture.h"
 #include <log/log.h>
 
-Texture *texture_create(const char *name, int generate_mipmap, int flip_y) {
+Texture *texture_create(const char *resources, const char *name, int generate_mipmap, int flip_y) {
     Texture *texture = calloc(1, sizeof(Texture));
-    if (!texture_init(texture, name, generate_mipmap, flip_y)) {
+    if (!texture_init(texture, resources, name, generate_mipmap, flip_y)) {
         free(texture);
         return NULL;
     }
     return texture;
 }
 
-int texture_init(Texture *texture, const char *name, int generate_mipmap, int flip_y) {
-    LOG("loading texture: %s\n", name);
+int texture_init(Texture *texture, const char *resources, const char *name, int generate_mipmap, int flip_y) {
+    LOG("loading texture: %s from %s\n", name, resources);
     int flags = 0;
-    texture->name = strdup(name);
+    texture->name = malloc(strlen(resources)+strlen(name)+1);
+    sprintf(texture->name, "%s%s", resources, name);
     if (generate_mipmap) {
         flags |= SOIL_FLAG_MIPMAPS;
         texture->has_MIP_map = TRUE;
     }
     if (flip_y)
         flags |= SOIL_FLAG_INVERT_Y;
-    texture->id = SOIL_load_OGL_texture(name, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, flags);
+    texture->id = SOIL_load_OGL_texture(texture->name, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, flags);
     if (texture->id == 0) {
-        LOGERR("failed to load texture %s\n", name);
+        LOGERR("failed to load texture %s\n", texture->name);
         free(texture->name);
         return FALSE;
     }

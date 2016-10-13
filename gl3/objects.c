@@ -6,19 +6,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#if defined(__MINGW32__)
-#include <malloc.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
-#elif defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
 #include <log/log.h>
+#include "gl.h"
 #include "objects.h"
 #include "math.h"
 #include "scene.h"
@@ -587,7 +576,7 @@ static void billboard_render(Billboard *obj) {
     object3d_render_cleanup(BASE, TRUE);
 }
 
-Model *model_create(const char *resource_path, const char *mesh_name) {
+Model *model_create(const char *resources, const char *mesh_name) {
     Model *obj = calloc(1, sizeof(Model));
     object3d_init(BASE);
     BASE->materials_enabled = TRUE;
@@ -596,17 +585,17 @@ Model *model_create(const char *resource_path, const char *mesh_name) {
     obj->mesh_name = strdup(mesh_name);
     BASE->render = (Object3DFPtr)object3d_render;
     BASE->destroy = (Object3DFPtr)model_destroy;
-    int pathlen = (int)(strlen(resource_path)+strlen(mesh_name)+5);
+    int pathlen = (int)(strlen(resources)+strlen(mesh_name)+5);
     char *texpath = alloca(pathlen);
-    sprintf(texpath, "%s%s.png", resource_path, mesh_name);
-    BASE->texture = texture_create(texpath, TRUE, TRUE);
+    sprintf(texpath, "%s.png", mesh_name);
+    BASE->texture = texture_create(resources, texpath, TRUE, TRUE);
     if (BASE->texture == NULL) {
         LOGERR("could not load texture: %s\n", texpath);
         //model_destroy(obj);
         //return NULL;
     }
     char *meshpath = alloca(pathlen);
-    sprintf(meshpath, "%s%s.3ds", resource_path, mesh_name);
+    sprintf(meshpath, "%s%s.3ds", resources, mesh_name);
     FILE *mesh = fopen(meshpath, "rb");
     if (mesh == NULL) {
         LOGERR("%s not found\n", meshpath);

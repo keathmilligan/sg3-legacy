@@ -76,7 +76,7 @@ OverlayLine *overlayline_create(int x1, int y1, int x2, int y2);
 OverlayTriangle *overlaytriangle_create(int width, int height, int filled);
 OverlayRectangle *overlayrectangle_create(int width, int height, int filled);
 OverlayCircle *overlaycircle_create(int radius, int filled);
-OverlayImage *overlayimage_create(int width, int height, const char *image_name);
+OverlayImage *overlayimage_create(int width, int height, const char *resources, const char *image_name);
 OverlayText *overlaytext_create(Font *font, const char *text, int max_len);
 void overlaytext_set_text(OverlayText *object, const char *text);
 

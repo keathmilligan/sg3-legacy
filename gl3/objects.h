@@ -137,6 +137,6 @@ Panel *panel_create(float width, float height, Texture *texture);
 int panel_init(Panel *obj, float width, float height, Texture *texture);
 Cube *cube_create(float width, float height, float depth, Texture *texture);
 Billboard *billboard_create(float width, float height, Texture *texture, Camera *camera, BillboardType type);
-Model *model_create(const char *resource_path, const char *mesh_name);
+Model *model_create(const char *resources, const char *mesh_name);
 
 #endif /* OBJECTS_H_ */
