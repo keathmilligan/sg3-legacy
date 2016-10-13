@@ -1,0 +1,7 @@
+/* resources.rc - Windows resources
+ * Copyright 2012 Keath Milligan
+ */
+
+#include "resources.h"
+
+AppIcon ICON "appicon.ico"
